@@ -25,19 +25,9 @@ const USERS = [
 const TOKEN = 'Punks not dead!';
 
 app.use((req, res, next) => {
-  console.log(req.headers.authorization);
-
   function verifyUser(err, payload) {
-    console.log(err);
-    console.log(payload);
-
-    if (err) next();
-    else if (payload) {
-      const user = USERS.find(u => u.login === payload.login);
-      if (user) {
-        req.user = user;
-      }
-      next();
+    if (!err && payload) {
+      req.user = USERS.find(u => u.login === payload.login);
     }
   }
 
@@ -80,13 +70,18 @@ app.post('/auth', (req, res) => {
 });
 app.get('/me', (req, res) => {
   if (req.user) {
-    res.status(200).json(req.user);
+    res.status(200).json({
+      login: req.user.login,
+      fullName: req.user.fullName,
+      admin: req.user.admin,
+    }); // Don't send password!
   } else {
     res.status(401).json({ message: 'Not authorized' });
   }
 });
 
-app.get('/admins', (req, res) => {
+app.get('/secret', (req, res) => {
+  console.log(req.user);
   if (req.user?.admin) {
     res.status(200).json({
       fbiControl: true,

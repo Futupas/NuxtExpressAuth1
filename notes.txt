@@ -1,0 +1,2 @@
+Nuxt auth does not work without Axios
+Fetch just does not send Authorization cookies
