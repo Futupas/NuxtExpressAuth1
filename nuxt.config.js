@@ -44,7 +44,9 @@ export default {
   // serverMiddleware: {
   //   '/api': '~/api/index.ts'
   // },
-  serverMiddleware: [
-    '~/serverMiddleware/api1/index.js'
+  serverMiddleware: [{
+      path: 'api',
+      handler: '~/api',
+    }
   ]
 }

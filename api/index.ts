@@ -1,10 +1,9 @@
-import { ServerMiddleware } from '@nuxt/types';
+import express from 'express';
 
-const myServerMiddleware: ServerMiddleware = function (req, res, next) {
-  // Use req, res, next
-  res.write('hello world');
-  console.log(req.url);
-  next();
-}
+const app = express();
 
-export default myServerMiddleware;
+app.get('/', (req, res) => {
+  res.send('Well done!');
+});
+
+export default app;
