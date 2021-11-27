@@ -35,18 +35,38 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/auth',
+    '@nuxtjs/axios',
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
 
-  // serverMiddleware: {
-  //   '/api': '~/api/index.ts'
-  // },
+
   serverMiddleware: [{
       path: 'api',
       handler: '~/api',
     }
-  ]
+  ],
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          // login: { url: '/api/login', method: 'post', propertyName: 'data.token' },
+          // user: { url: '/api/me', method: 'get', propertyName: 'data' },
+          login: { url: '/api/auth', method: 'post', propertyName: 'token' },
+          user: { url: '/api/me', method: 'get', propertyName: false },
+          logout: false
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+        tokenName: 'Authorization'
+      }
+    },
+    redirect: {
+      login: '/login',
+      logout: '/login',
+    },
+  }
 }
