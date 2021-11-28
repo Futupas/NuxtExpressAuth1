@@ -1,29 +1,12 @@
+'use strict';
+
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import USERS from './users';
+const TOKEN = 'Punks not dead!'; // Secret (private) key
 
 const app = express();
 app.use(express.json());
-
-const USERS = [
-  {
-    login: 'u1',
-    password: '1',
-    fullName: 'Egor',
-    admin: true,
-  }, {
-    login: 'u2',
-    password: '1',
-    fullName: 'Misha',
-    admin: false,
-  }, {
-    login: 'u3',
-    password: '1',
-    fullName: 'Anton',
-    admin: false,
-  }
-];
-const TOKEN = 'Punks not dead!';
-
 app.use((req, res, next) => {
   function verifyUser(err, payload) {
     if (!err && payload) {
@@ -33,55 +16,54 @@ app.use((req, res, next) => {
 
   if (req.headers.authorization) {
     jwt.verify(
-      req.headers.authorization.split(' ')[1],
+      req.headers.authorization.split(' ')[1], // 'Bearer tra.tatatataa.taa'
       TOKEN,
       verifyUser
     );
   }
 
   next();
-})
+});
 
+// GET /api
 app.get('/', (req, res) => {
   res.send('Express API');
 });
 
+// POST /api/auth
 app.post('/auth', (req, res) => {
   const login = req.body?.login;
   const password = req.body?.password;
 
-  if (!login || !password) {
-    res.status(400).send('No login and password provided');
-    return;
-  }
-
   const user = USERS.find(u => u.login === login && u.password === password);
 
   if (!user) {
-    res.status(400).send('No user with this login and password found.');
+    res.status(401).send('No user with provided credentials found.');
     return;
   }
 
   res.status(200).json({
     login: user.login,
     name: user.fullName,
-    token: jwt.sign({ login: user.login, admin: user.admin }, TOKEN),
+    token: jwt.sign({ login: user.login, admin: user.admin }, TOKEN, { expiresIn: '1m' }),
   });
 });
+
+// GET /api/me
 app.get('/me', (req, res) => {
   if (req.user) {
     res.status(200).json({
       login: req.user.login,
       fullName: req.user.fullName,
       admin: req.user.admin,
-    }); // Don't send password!
+    });
   } else {
     res.status(401).json({ message: 'Not authorized' });
   }
 });
 
+// GET /api/secret
 app.get('/secret', (req, res) => {
-  console.log(req.user);
   if (req.user?.admin) {
     res.status(200).json({
       fbiControl: true,

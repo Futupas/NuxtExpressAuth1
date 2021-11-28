@@ -45,16 +45,15 @@ export default {
 
 
   serverMiddleware: [{
-      path: 'api',
+      path: '/api',
       handler: '~/api',
     }
   ],
+  
   auth: {
     strategies: {
       local: {
         endpoints: {
-          // login: { url: '/api/login', method: 'post', propertyName: 'data.token' },
-          // user: { url: '/api/me', method: 'get', propertyName: 'data' },
           login: { url: '/api/auth', method: 'post', propertyName: 'token' },
           user: { url: '/api/me', method: 'get', propertyName: false },
           logout: false

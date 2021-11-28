@@ -2,6 +2,7 @@
 
   <div>
     <div v-if="this.$auth.loggedIn">Your name: {{ this.$auth.user.fullName }}</div>
+    
     <form method="post" @submit.prevent="login" v-if="!this.$auth.loggedIn">
       <input type="text" placeholder="Login" v-model="loginText" />
       <input type="password" placeholder="Password" v-model="password" />
