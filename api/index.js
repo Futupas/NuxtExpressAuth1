@@ -77,4 +77,9 @@ app.get('/secret', (req, res) => {
   }
 });
 
+// GET /api/tin
+app.get('/tin', (req, res) => {
+  res.send('1234567890');
+});
+
 export default app;
