@@ -24,7 +24,7 @@ const TOKEN = 'Punks not dead!'; // Secret (private) key
 const APP_PORT = 3000;
 
 const app = express();
-app.use(express.static('static'));
+app.use(express.static('static_nuxt'));
 app.use(express.json());
 app.use((req, res, next) => {
   function verifyUser(err, payload) {
@@ -45,12 +45,12 @@ app.use((req, res, next) => {
 });
 
 // GET /api
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Express API');
 });
 
 // POST /api/auth
-app.post('/auth', (req, res) => {
+app.post('/api/auth', (req, res) => {
   const login = req.body?.login;
   const password = req.body?.password;
 
@@ -64,12 +64,12 @@ app.post('/auth', (req, res) => {
   res.status(200).json({
     login: user.login,
     name: user.fullName,
-    token: jwt.sign({ login: user.login, admin: user.admin }, TOKEN, { expiresIn: '1m' }),
+    token: jwt.sign({ login: user.login, admin: user.admin }, TOKEN, { expiresIn: '1h' }),
   });
 });
 
 // GET /api/me
-app.get('/me', (req, res) => {
+app.get('/api/me', (req, res) => {
   if (req.user) {
     res.status(200).json({
       login: req.user.login,
@@ -82,7 +82,7 @@ app.get('/me', (req, res) => {
 });
 
 // GET /api/secret
-app.get('/secret', (req, res) => {
+app.get('/api/secret', (req, res) => {
   if (req.user?.admin) {
     res.status(200).json({
       fbiControl: true,
@@ -97,7 +97,7 @@ app.get('/secret', (req, res) => {
 });
 
 // GET /api/tin
-app.get('/tin', (req, res) => {
+app.get('/api/tin', (req, res) => {
   res.send('1234567890');
 });
 

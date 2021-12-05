@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{257:function(n,e,l){"use strict";l.r(e);var t={middleware:["admin_only"]},o=l(54),component=Object(o.a)(t,(function(){var n=this,e=n.$createElement;return(n._self._c||e)("div",[n._v("\n  Page for admins only\n")])}),[],!1,null,null,null);e.default=component.exports}}]);

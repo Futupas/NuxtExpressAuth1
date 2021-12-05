@@ -67,5 +67,10 @@ export default {
       login: '/login',
       logout: '/login',
     },
+  },
+
+  generate: {
+    dir: '..\\nuxt-server-example\\static_nuxt',
+    routes: ['/info/1', '/info/2', '/async_info/1', '/async_info/2'],
   }
 }
